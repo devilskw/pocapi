@@ -1,0 +1,18 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /exemplo
+springdoc:
+  show-actuator: true
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+  api-docs:
+    path: /oas30
+spring:
+  main:
+    lazy-initialization: true
+  messages:
+    encoding: UTF-8
+    fallback-to-system-locale: true
+    basename: i18n/messages

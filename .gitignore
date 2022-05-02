@@ -4,6 +4,10 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+#Maven
+.flattened-pom.xml
+.mvn
+
 ### STS ###
 .apt_generated
 .classpath
