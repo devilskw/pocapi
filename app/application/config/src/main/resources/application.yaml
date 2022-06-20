@@ -1,14 +1,15 @@
+# default
 server:
   port: 8080
   servlet:
     context-path: /exemplo
 springdoc:
+  api-docs:
+    path: /oas30
   show-actuator: true
   swagger-ui:
     path: /swagger-ui.html
     operationsSorter: method
-  api-docs:
-    path: /oas30
 spring:
   main:
     lazy-initialization: true
@@ -16,3 +17,88 @@ spring:
     encoding: UTF-8
     fallback-to-system-locale: true
     basename: i18n/messages
+info:
+  app:
+    name: ${project.parent.name}
+    version: ${project.parent.version}
+    author:
+      name: Kazuo
+      email: teste@teste.br
+management:
+  tags:
+    application: ${project.parent.artifactId}
+  metrics:
+    enable:
+      jvm: true
+    export:
+      prometheus:
+        enabled: true
+    endpoint:
+      prometheus:
+        enabled: true
+      web:
+        exposure:
+          include: health,info,metrics,prometheus
+    distribution:
+      sla:
+        http:
+          server:
+            requests: 50ms,100ms,200ms,300ms,500ms,1s,2s
+
+---
+# test
+server:
+  port: 7000
+spring:
+  config:
+    activate:
+      on-profile: test
+  main:
+    lazy-initialization: false
+---
+# dev
+server:
+  port: 8089
+spring:
+  config:
+    activate:
+      on-profile: dev
+---
+# hom
+server:
+  port: 8089
+spring:
+  config:
+    activate:
+      on-profile: hom
+---
+# pro
+server:
+  port: 8089
+spring:
+  config:
+    activate:
+      on-profile: pro
+management:
+  tags:
+    application: ${project.parent.artifactId}
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    prometheus:
+      enabled: true
+    web:
+      exposure:
+        include: info, health, metrics, prometheus
+  metrics:
+    enable:
+      jvm: true
+    export:
+      prometheus:
+        enabled: true
+    distribution:
+      sla:
+        http:
+          server:
+            requests: 50ms,100ms,200ms,300ms,500ms,1s,2s

@@ -21,6 +21,12 @@
     <dependencies>
         <dependency>
             <groupId>br.com.kazuo.pocapi</groupId>
+            <artifactId>shared</artifactId>
+            <version>${revision}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>br.com.kazuo.pocapi</groupId>
             <artifactId>domain</artifactId>
             <version>${revision}</version>
         </dependency>
@@ -41,12 +47,6 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>RELEASE</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

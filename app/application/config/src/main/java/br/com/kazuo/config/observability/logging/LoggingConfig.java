@@ -1,5 +1,8 @@
 package br.com.kazuo.config.observability.logging;
 
+import br.com.kazuo.shared.observability.CounterAnnotation;
+import br.com.kazuo.shared.observability.LoggingAnnotation;
+import io.micrometer.core.instrument.Metrics;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -7,6 +10,7 @@ import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -72,4 +76,5 @@ public class LoggingConfig {
             throw e;
         }
     }
+
 }
