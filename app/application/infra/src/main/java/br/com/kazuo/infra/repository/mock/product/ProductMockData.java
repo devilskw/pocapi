@@ -1,10 +1,10 @@
 package br.com.kazuo.infra.repository.mock.product;
 
-import br.com.kazuo.dataprovider.product.entity.ProductEntity;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import br.com.kazuo.dataprovider.product.persistence.entity.ProductEntity;
 
 public class ProductMockData {
     private static volatile ProductMockData instance;

@@ -22,7 +22,8 @@ class MethodArgumentNotValidExceptionHandlerTest {
 
     private MethodArgumentNotValidException prepareException() throws NoSuchMethodException {
         BindException ex = new BindException("constraintViolationMassTestDTO.testMethodInvalidArgument", "id");
-        MethodParameter parameter = new MethodParameter(ConstraintViolationMassTestDTO.class.getDeclaredMethod("testMethodInvalidArgument", Long.class), 0);
+        MethodParameter parameter = new MethodParameter(
+                ConstraintViolationMassTestDTO.class.getDeclaredMethod("testMethodInvalidArgument", Long.class), 0);
         return new MethodArgumentNotValidException(parameter, ex.getBindingResult());
     }
 
@@ -30,12 +31,10 @@ class MethodArgumentNotValidExceptionHandlerTest {
     void handle() throws NoSuchMethodException {
         HttpStatus respStatus = HttpStatus.BAD_REQUEST;
         ResponseError respError = prepareResponseError(respStatus, this.msg);
-        ResponseEntity<ResponseWrapper> response = this.handler.handle(prepareException(), i18nSupportTest.messageSource(), i18nSupportTest.locale());
-        Assertions.assertAll(
-                () -> Assertions.assertNotNull(response,
-                        "Asserts that response is not null"),
-                () -> Assertions.assertNotNull(response.getBody(),
-                        "Asserts that response body is not null"),
+        ResponseEntity<ResponseWrapper<ResponseError>> response = this.handler.handle(prepareException(),
+                i18nSupportTest.messageSource(), i18nSupportTest.locale());
+        Assertions.assertAll(() -> Assertions.assertNotNull(response, "Asserts that response is not null"),
+                () -> Assertions.assertNotNull(response.getBody(), "Asserts that response body is not null"),
                 () -> Assertions.assertNotNull(response.getStatusCode(),
                         "Asserts that response status code is not null"),
                 () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode(),
@@ -45,12 +44,11 @@ class MethodArgumentNotValidExceptionHandlerTest {
                 () -> Assertions.assertTrue((response.getBody().getData() instanceof ResponseError),
                         "Asserts that response body data is ResponseError type"),
                 () -> Assertions.assertEquals(respError.getCode(),
-                        ((ResponseError)response.getBody().getData()).getCode(),
+                        ((ResponseError) response.getBody().getData()).getCode(),
                         "Asserts that response data code correspond to response error code"),
                 () -> Assertions.assertEquals(respError.getMessage(),
-                        ((ResponseError)response.getBody().getData()).getMessage(),
-                        "Asserts that response data message correspond to response error message")
-        );
+                        ((ResponseError) response.getBody().getData()).getMessage(),
+                        "Asserts that response data message correspond to response error message"));
     }
 
     @Test
@@ -59,12 +57,10 @@ class MethodArgumentNotValidExceptionHandlerTest {
         ResponseError respError = prepareResponseError(respStatus, this.msg, "Validation.Exception.NotNull");
         this.exception = prepareException();
         this.exception.getBindingResult().addError(getObjectError());
-        ResponseEntity<ResponseWrapper> response = this.handler.handle(this.exception, i18nSupportTest.messageSource(), i18nSupportTest.locale());
-        Assertions.assertAll(
-                () -> Assertions.assertNotNull(response,
-                        "Asserts that response is not null"),
-                () -> Assertions.assertNotNull(response.getBody(),
-                        "Asserts that response body is not null"),
+        ResponseEntity<ResponseWrapper<ResponseError>> response = this.handler.handle(this.exception,
+                i18nSupportTest.messageSource(), i18nSupportTest.locale());
+        Assertions.assertAll(() -> Assertions.assertNotNull(response, "Asserts that response is not null"),
+                () -> Assertions.assertNotNull(response.getBody(), "Asserts that response body is not null"),
                 () -> Assertions.assertNotNull(response.getStatusCode(),
                         "Asserts that response status code is not null"),
                 () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode(),
@@ -74,12 +70,11 @@ class MethodArgumentNotValidExceptionHandlerTest {
                 () -> Assertions.assertTrue((response.getBody().getData() instanceof ResponseError),
                         "Asserts that response body data is ResponseError type"),
                 () -> Assertions.assertEquals(respError.getCode(),
-                        ((ResponseError)response.getBody().getData()).getCode(),
+                        ((ResponseError) response.getBody().getData()).getCode(),
                         "Asserts that response data code correspond to response error code"),
                 () -> Assertions.assertEquals(respError.getMessage(),
-                        ((ResponseError)response.getBody().getData()).getMessage(),
-                        "Asserts that response data message correspond to response error message")
-        );
+                        ((ResponseError) response.getBody().getData()).getMessage(),
+                        "Asserts that response data message correspond to response error message"));
     }
 
     @Test
@@ -88,12 +83,10 @@ class MethodArgumentNotValidExceptionHandlerTest {
         ResponseError respError = prepareResponseError(respStatus, this.msg);
         this.exception = prepareException();
         this.exception.getBindingResult().addError(getObjectError());
-        ResponseEntity<ResponseWrapper> response = this.handler.handle(this.exception, i18nSupportTest.messageSource(), i18nSupportTest.locale());
-        Assertions.assertAll(
-                () -> Assertions.assertNotNull(response,
-                        "Asserts that response is not null"),
-                () -> Assertions.assertNotNull(response.getBody(),
-                        "Asserts that response body is not null"),
+        ResponseEntity<ResponseWrapper<ResponseError>> response = this.handler.handle(this.exception,
+                i18nSupportTest.messageSource(), i18nSupportTest.locale());
+        Assertions.assertAll(() -> Assertions.assertNotNull(response, "Asserts that response is not null"),
+                () -> Assertions.assertNotNull(response.getBody(), "Asserts that response body is not null"),
                 () -> Assertions.assertNotNull(response.getStatusCode(),
                         "Asserts that response status code is not null"),
                 () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode(),
@@ -103,12 +96,11 @@ class MethodArgumentNotValidExceptionHandlerTest {
                 () -> Assertions.assertTrue((response.getBody().getData() instanceof ResponseError),
                         "Asserts that response body data is ResponseError type"),
                 () -> Assertions.assertEquals(respError.getCode(),
-                        ((ResponseError)response.getBody().getData()).getCode(),
+                        ((ResponseError) response.getBody().getData()).getCode(),
                         "Asserts that response data code correspond to response error code"),
                 () -> Assertions.assertEquals(getMessage("Validation.Exception.NotNull"),
-                        ((ResponseError)response.getBody().getData()).getMessage(),
-                        "Asserts that response data message correspond to response error message")
-        );
+                        ((ResponseError) response.getBody().getData()).getMessage(),
+                        "Asserts that response data message correspond to response error message"));
     }
 
     private ResponseError prepareResponseError(HttpStatus status, String message) {
@@ -116,20 +108,16 @@ class MethodArgumentNotValidExceptionHandlerTest {
     }
 
     private ResponseError prepareResponseError(HttpStatus status, String message, String msgProp) {
-        return new ResponseError(
-                status.series().value(),
-                msgProp == null ? i18nSupportTest.messageSource().getMessage(
-                        RestControllerAdvice.getDefaultMessageProperty(status),
-                        null,
-                        i18nSupportTest.locale()) : getMessage(msgProp),
-                message
-        );
+        return new ResponseError(status.series().value(),
+                msgProp == null
+                        ? i18nSupportTest.messageSource().getMessage(
+                                RestControllerAdvice.getDefaultMessageProperty(status), null, i18nSupportTest.locale())
+                        : getMessage(msgProp),
+                message);
     }
+
     private String getMessage(String msgprop) {
-        return i18nSupportTest.messageSource().getMessage(
-                msgprop,
-                null,
-                i18nSupportTest.locale());
+        return i18nSupportTest.messageSource().getMessage(msgprop, null, i18nSupportTest.locale());
     }
 
     private ObjectError getObjectError() {

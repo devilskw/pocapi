@@ -15,34 +15,23 @@ public class ConstraintViolationExceptionHandler implements CustomExceptionHandl
     private static final HttpStatus HTTP_STATUS = HttpStatus.BAD_REQUEST;
 
     @Override
-    public ResponseEntity<ResponseWrapper> handle(ConstraintViolationException exception, MessageSource messageSource, Locale locale) {
-        return new ResponseEntity<ResponseWrapper>(
-                new ResponseWrapper(
-                        new ResponseError(
-                                HTTP_STATUS.series().value(),
-                                this.getMessage(exception, messageSource, locale),
-                                exception.getMessage()
-                        )
-                )
-                , HTTP_STATUS
-        );
+    public ResponseEntity<ResponseWrapper<ResponseError>> handle(ConstraintViolationException exception,
+            MessageSource messageSource, Locale locale) {
+        return new ResponseEntity<>(new ResponseWrapper<>(new ResponseError(HTTP_STATUS.series().value(),
+                this.getMessage(exception, messageSource, locale), exception.getMessage())), HTTP_STATUS);
     }
 
-
-    private String getMessage(final ConstraintViolationException exception, final MessageSource messageSource, final Locale locale) {
+    private String getMessage(final ConstraintViolationException exception, final MessageSource messageSource,
+            final Locale locale) {
         Object[] args = null;
         try {
-            ConstraintViolation violation = exception.getConstraintViolations().isEmpty() ? null :
-                    (ConstraintViolation)exception.getConstraintViolations().toArray()[0];
+            ConstraintViolation<?> violation = exception.getConstraintViolations().isEmpty() ? null
+                    : (ConstraintViolation) exception.getConstraintViolations().toArray()[0];
             if (Objects.nonNull(violation)) {
-                String msgProperty = new StringBuilder()
-                        .append(RestControllerAdvice.MSGPREFIX)
+                String msgProperty = new StringBuilder().append(RestControllerAdvice.MSGPREFIX)
                         .append(violation.getConstraintDescriptor().getAnnotation().annotationType().getSimpleName())
-                        .append(".")
-                        .append(violation.getPropertyPath().toString())
-                        .toString();
-                Object argValue = violation.getConstraintDescriptor()
-                        .getAttributes().getOrDefault("value", null);
+                        .append(".").append(violation.getPropertyPath().toString()).toString();
+                Object argValue = violation.getConstraintDescriptor().getAttributes().getOrDefault("value", null);
                 if (Objects.nonNull(argValue)) {
                     args = new Object[1];
                     args[0] = argValue;
@@ -50,16 +39,18 @@ public class ConstraintViolationExceptionHandler implements CustomExceptionHandl
                 return this.getMessage(msgProperty, args, messageSource, locale);
             }
             return this.getMessage(HTTP_STATUS, null, messageSource, locale);
-        } catch (Exception ex){
+        } catch (Exception ex) {
             return this.getMessage(HTTP_STATUS, null, messageSource, locale);
         }
     }
 
-    private String getMessage(final String msgProperty, final Object[] args, final MessageSource messageSource, final Locale locale) {
+    private String getMessage(final String msgProperty, final Object[] args, final MessageSource messageSource,
+            final Locale locale) {
         return messageSource.getMessage(msgProperty, args, locale);
     }
 
-    private String getMessage(final HttpStatus httpStatus, final Object[] args, final MessageSource messageSource, final Locale locale) {
-        return messageSource.getMessage(RestControllerAdvice.getDefaultMessageProperty(httpStatus), args,locale);
+    private String getMessage(final HttpStatus httpStatus, final Object[] args, final MessageSource messageSource,
+            final Locale locale) {
+        return messageSource.getMessage(RestControllerAdvice.getDefaultMessageProperty(httpStatus), args, locale);
     }
 }

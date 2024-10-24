@@ -27,10 +27,7 @@ public class InternationalizationConfig implements LocaleContextResolver {
     @Override
     public LocaleContext resolveLocaleContext(ServerWebExchange exchange) {
         Locale locale = Locale.getDefault();
-        List<String> langs = exchange
-                .getRequest()
-                .getHeaders()
-                .get(HttpHeaders.ACCEPT_LANGUAGE);
+        List<String> langs = exchange.getRequest().getHeaders().get(HttpHeaders.ACCEPT_LANGUAGE);
         if (!isNullOrEmpty(langs) && !isNullOrEmpty(langs.get(0))) {
             try {
                 locale = Locale.forLanguageTag(langs.get(0));
@@ -50,6 +47,6 @@ public class InternationalizationConfig implements LocaleContextResolver {
     }
 
     @Override
-    public void setLocaleContext(ServerWebExchange exchange, LocaleContext localeContext) { }
+    public void setLocaleContext(ServerWebExchange exchange, LocaleContext localeContext) {}
 
 }

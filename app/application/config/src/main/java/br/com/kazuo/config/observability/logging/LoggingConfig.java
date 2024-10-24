@@ -1,8 +1,5 @@
 package br.com.kazuo.config.observability.logging;
 
-import br.com.kazuo.shared.observability.CounterAnnotation;
-import br.com.kazuo.shared.observability.LoggingAnnotation;
-import io.micrometer.core.instrument.Metrics;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -10,7 +7,6 @@ import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -20,28 +16,32 @@ import java.util.Arrays;
 @Component
 public class LoggingConfig {
     /**
-     * Pointcut that matches all repositories, services and Web REST endpoints.
+     * Pointcut that matches all repositories, services and Web REST
+     * endpoints.
      */
-    @Pointcut("@within(org.springframework.stereotype.Repository)" +
-            " || @within(org.springframework.stereotype.Service)" +
-            " || @within(org.springframework.web.bind.annotation.RestController)")
+    @Pointcut("@within(org.springframework.stereotype.Repository)"
+            + " || @within(org.springframework.stereotype.Service)"
+            + " || @within(org.springframework.web.bind.annotation.RestController)")
     public void springBeanPointcut() {
-        // Method is empty as this is just a Pointcut, the implementations are in the advices.
+        // Method is empty as this is just a Pointcut, the implementations are
+        // in the advices.
     }
 
     /**
-     * Pointcut that matches all Spring beans in the application's main packages.
+     * Pointcut that matches all Spring beans in the application's main
+     * packages.
      */
     @Pointcut("within(br.com.kazuo..*)")
     public void applicationPackagePointcut() {
-        // Method is empty as this is just a Pointcut, the implementations are in the advices.
+        // Method is empty as this is just a Pointcut, the implementations are
+        // in the advices.
     }
 
     /**
      * Advice that logs methods throwing exceptions.
      *
      * @param joinPoint join point for advice
-     * @param e exception
+     * @param e         exception
      */
     @AfterThrowing(pointcut = "applicationPackagePointcut() && springBeanPointcut()", throwing = "e")
     public void logAfterThrowing(JoinPoint joinPoint, Throwable e) {
@@ -62,8 +62,7 @@ public class LoggingConfig {
             log.debug("[IN] {}.{}() with argument[s] = {}", joinPoint.getSignature().getDeclaringTypeName(),
                     joinPoint.getSignature().getName(), Arrays.toString(joinPoint.getArgs()));
         } else {
-            log.info("{}.{}()", joinPoint.getSignature().getDeclaringTypeName(),
-                    joinPoint.getSignature().getName());
+            log.info("{}.{}()", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
         }
         try {
             Object result = joinPoint.proceed();

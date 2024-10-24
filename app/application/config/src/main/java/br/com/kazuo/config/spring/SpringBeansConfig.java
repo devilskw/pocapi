@@ -1,11 +1,11 @@
 package br.com.kazuo.config.spring;
 
-import br.com.kazuo.dataprovider.product.ProductDataProvider;
-import br.com.kazuo.dataprovider.product.ProductCommandRepository;
-import br.com.kazuo.dataprovider.product.ProductQueryRepository;
-import br.com.kazuo.domain.usecase.product.ProductFacadeUsecase;
+import br.com.kazuo.domain.usecase.product.ProductManagement;
+import br.com.kazuo.dataprovider.product.persistence.ProductCommandRepository;
+import br.com.kazuo.dataprovider.product.persistence.ProductDataProvider;
+import br.com.kazuo.dataprovider.product.persistence.ProductQueryRepository;
 import br.com.kazuo.domain.usecase.product.ProductDsGateway;
-import br.com.kazuo.domain.usecase.product.ProductUseCase;
+import br.com.kazuo.domain.usecase.product.ProductUsecase;
 import br.com.kazuo.infra.repository.mock.product.ProductCommandMock;
 import br.com.kazuo.infra.repository.mock.product.ProductQueryMock;
 import org.springframework.context.annotation.Bean;
@@ -15,8 +15,8 @@ import org.springframework.context.annotation.Configuration;
 public class SpringBeansConfig {
 
     @Bean
-    public ProductUseCase productUseCase() {
-        return new ProductFacadeUsecase(productDsGateway());
+    public ProductUsecase productUseCase() {
+        return new ProductManagement(productDsGateway());
     }
 
     @Bean

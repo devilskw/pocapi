@@ -12,8 +12,6 @@ import org.springframework.context.annotation.Configuration;
 @EnableConfigurationProperties
 @ConfigurationProperties
 public class ApplicationEnvConfig implements ApplicationProperties {
-    @Value(value="${spring.config.activate.on-profile}")
+    @Value(value = "${spring.config.activate.on-profile}")
     private String environment;
 }
-
-

@@ -15,6 +15,8 @@ public class ConstraintViolationMassTestDTO {
         this.noMessagePropertyEquivalent = noMessagePropertyEquivalent;
     }
 
-    public String testMethodInvalidArgument(@Min(1) Long id) { return null; }
+    public String testMethodInvalidArgument(@Min(1) Long id) {
+        return null;
+    }
 
 }

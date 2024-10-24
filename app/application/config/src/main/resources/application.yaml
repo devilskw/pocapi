@@ -44,7 +44,39 @@ management:
         http:
           server:
             requests: 50ms,100ms,200ms,300ms,500ms,1s,2s
-
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 3000
+        readTimeout: 3000
+        loggerLevel: basic
+resilience4j:
+  bulkhead:
+    configs:
+      default:
+        maxConcurrentCalls: 500 #qtde máx de requisições para endpoit v1/produtos
+        maxWaitDuration: 1s #
+    instances:
+      v1-produtos:
+        baseConfig: default
+  thread-pool-bulkhead:
+    configs:
+      default:
+        maxThreadPoolSize: 4
+        coreThreadPoolSize: 2
+        queueCapacity: 2
+    instances:
+      v1-produtos:
+        baseConfig: default
+  # retry:
+  #   instances:
+  #     get-products-core:
+  #       maxRetryAttempts: 3
+  #       waitDuration: 1s
+  #       enableExponentialBackoff: true
+  #       exponentialBackoffMultiplier: 2
+  #       resultPredicate: io.reflectoring.resilience4j.springboot.predicates.ConditionalRetryPredicate
 ---
 # test
 server:

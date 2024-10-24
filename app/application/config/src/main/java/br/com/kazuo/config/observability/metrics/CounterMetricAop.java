@@ -7,7 +7,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Aspect
@@ -16,7 +15,6 @@ public class CounterMetricAop {
 
     private MeterRegistry registry;
 
-    @Autowired
     public CounterMetricAop(MeterRegistry registry) {
         this.registry = registry;
         Metrics.addRegistry(this.registry);
@@ -30,7 +28,8 @@ public class CounterMetricAop {
             joinPoint.proceed();
             Metrics.counter(counterAnnotation.value(), counterAnnotation.tags()).increment();
         } catch (Throwable t) {
-            Metrics.counter(counterAnnotation.value() + ".error", "exception", t.getClass().getSimpleName()).increment();
+            Metrics.counter(counterAnnotation.value() + ".error", "exception", t.getClass().getSimpleName())
+                    .increment();
         }
     }
 }

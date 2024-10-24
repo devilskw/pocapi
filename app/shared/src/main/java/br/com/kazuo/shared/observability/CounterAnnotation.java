@@ -6,5 +6,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CounterAnnotation {
     String value();
+
     String[] tags() default {};
 }

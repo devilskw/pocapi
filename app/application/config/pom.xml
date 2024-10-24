@@ -27,7 +27,7 @@
         </dependency>
         <dependency>
             <groupId>br.com.kazuo.pocapi</groupId>
-            <artifactId>entrypoint</artifactId>
+            <artifactId>controller</artifactId>
             <version>${revision}</version>
             <scope>compile</scope>
         </dependency>
@@ -40,6 +40,12 @@
         <dependency>
             <groupId>br.com.kazuo.pocapi</groupId>
             <artifactId>infra</artifactId>
+            <version>${revision}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>br.com.kazuo.pocapi</groupId>
+            <artifactId>domain</artifactId>
             <version>${revision}</version>
             <scope>compile</scope>
         </dependency>
@@ -64,6 +70,14 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>io.github.resilience4j</groupId>
+            <artifactId>resilience4j-spring-boot2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.github.resilience4j</groupId>
+            <artifactId>resilience4j-all</artifactId>
         </dependency>
         <dependency>
             <groupId>io.swagger.codegen.v3</groupId>
